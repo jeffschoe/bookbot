@@ -23,13 +23,10 @@ def main():
     
     print("--------- Character Count -------")
     count_of_chars = get_num_chars(get_book_text(path_to_book_file))
-    #print(count_of_chars) prints unsorted dictionary
     sorted_chars_and_counts = sort_chars_and_counts(count_of_chars) #list of dictionaries
-    #print(sorted_chars_and_counts) prints sorted list of dictionaries
     i = 0
     while i < len(sorted_chars_and_counts):
         if sorted_chars_and_counts[i]["character"].isalpha():
-            #print(sorted_chars_and_counts[i])
             print(f"{sorted_chars_and_counts[i]["character"]}: {sorted_chars_and_counts[i]["count"]}")
             i +=1
         else:
