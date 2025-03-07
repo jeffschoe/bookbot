@@ -1,22 +1,28 @@
 from stats import get_num_words
 from stats import get_num_chars
 from stats import sort_chars_and_counts
+import sys
 
 def get_book_text(path_to_file):
     with open(path_to_file) as f: #with block opens a file
         file_contents = f.read() #.read() method puts content into a string
     return file_contents
 
-def main():
-    #print(f"{get_book_text("./books/frankenstein.txt")}")
+def main():  
+    if len(sys.argv) != 2:
+        print ("Usage: python3 main.py <path_to_book>") 
+        sys.exit(1)
+
+    path_to_book_file = sys.argv[1] 
+
     print("============ BOOKBOT ============")
-    print("Analyzing book found at TBD")
+    print(f"Analyzing book found at {path_to_book_file}")
 
     print("----------- Word Count ----------")
-    print(f"Found {get_num_words(get_book_text("./books/frankenstein.txt"))} total words")
+    print(f"Found {get_num_words(get_book_text(path_to_book_file))} total words")
     
     print("--------- Character Count -------")
-    count_of_chars = get_num_chars(get_book_text("./books/frankenstein.txt"))
+    count_of_chars = get_num_chars(get_book_text(path_to_book_file))
     #print(count_of_chars) prints unsorted dictionary
     sorted_chars_and_counts = sort_chars_and_counts(count_of_chars) #list of dictionaries
     #print(sorted_chars_and_counts) prints sorted list of dictionaries
