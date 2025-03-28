@@ -5,7 +5,9 @@ import sys
 import requests
 
 """
-Still want to work on: add way to automatically save reports to a file called reports.
+Still want to work on: 
+    add way to automatically save reports to a file called reports.
+    add error handling
 """
 
 def get_book_text(path_to_file):
