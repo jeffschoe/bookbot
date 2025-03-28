@@ -6,6 +6,7 @@ import requests
 
 """
 Still want to work on: 
+    distinguish between first use and continued uses within the loop
     add way to automatically save reports to a file called reports.
     add error handling
 """
@@ -19,23 +20,41 @@ def main():
 
     welcome()
 
-    while ask_run_analyzer() == 'yes': # main book loop
+    first_loop = True
 
-        book_type = get_book_type()
+    while ask_run_analyzer(first_loop) == 'yes': # main book loop
+
+        book_type = get_book_type()    
 
         if book_type == "local":
             generate_report(get_book_local_path())
         elif book_type == "online":
-            generate_report(url_to_txt(get_book_url())) # still need to work out how to pass the url to the report and have it download it
+            generate_report(url_to_txt(get_book_url(), get_new_txt_name()))
         else: 
-            pass # block reserved in case other methods of getting books are added
-    
+            pass # block reserved in case other methods of getting books are ever added
+        
+        first_loop = False 
+
     end()
 
 def welcome(): # introduce the program
     print("Welcome to Bookbot, by @jeffschoe")
-    print("Bookbot with analyze a book for you, either saved locally or pulled from the web.\n")
+    print("Bookbot will analyze a book for you, either saved locally or pulled from the web!\n")
     return
+
+def ask_run_analyzer(first_loop):
+
+    if first_loop == True:
+        print("Let's anaylze your first book!\n")
+        print(f"Would you like to continue? Type \"yes\" or \"no\".\n")
+        answer_run_analyzer = input("Response: ")
+        print("")
+        return answer_run_analyzer
+    else:
+        print(f"Would you like to analyze another book? Type \"yes\" or \"no\".\n")
+        answer_run_analyzer = input("Response: ")
+        print("")
+        return answer_run_analyzer
 
 def get_book_type(): # get the type of book user wants to analyze
     print("If you would like to analyze a local book, type \"local\". If you would like to analyze an online book, type \"online\".\n")
@@ -52,11 +71,20 @@ def get_book_url(): # gets the url to the book from the user
     print("")
     return book_url
 
-def url_to_txt(book_url): 
-    response = requests.get(book_url)
-    with open('books/TESTFILE.txt', 'wb') as f: # need to write additional code for user to specify the file name, instead of hardcoding the file name
-        f.write(response.content)
-    return 'books/TESTFILE.txt'
+def get_new_txt_name(): # asks user to specify the new file name for their book
+    new_txt_name = input("Input a new file name, such as \"example.txt\", to write the book to: ")
+    print("")
+    return new_txt_name
+
+def url_to_txt(book_url, new_book_txt_name): 
+    response = requests.get(book_url) # get the book from the web
+    with open(f'books/{new_book_txt_name}', 'wb') as f:
+        f.write(response.content) # writes book to file
+    new_path_from_url = f'books/{new_book_txt_name}'
+    return new_path_from_url
+
+def make_path():
+    pass # may break out function that take the new file and return a path to it, from right above in url_to_txt function
 
 def generate_report(path_to_book_file): # prints the report
 
@@ -81,11 +109,7 @@ def generate_report(path_to_book_file): # prints the report
     print("============= END ===============\n")
     return
 
-def ask_run_analyzer():
-    print("Would you like to analyze a book? Type \"yes\" or \"no\".\n")
-    answer_run_analyzer = input("Response: ")
-    print("")
-    return answer_run_analyzer
+
 
 def end():
     print("Thank you for using Bookbot!\n")
