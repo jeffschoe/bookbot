@@ -9,12 +9,40 @@ def get_book_text(path_to_file):
     return file_contents
 
 def main():  
+    welcome()
+
+    if get_book_type() == "local":
+        generate_report(get_book_path())
+    elif get_book_type == "online":
+        pass
+    else:
+        pass
+
+    """
     if len(sys.argv) != 2:
         print ("Usage: python3 main.py <path_to_book>") 
         sys.exit(1)
+    """
 
-    path_to_book_file = sys.argv[1] 
+def welcome(): # introduce the program
+    print("Welcome to Bookbot, by @jeffschoe")
+    print("You will be able to get an analysis on a book either saved locally or from the web.\n")
+    return
 
+def get_book_type(): # get the type of book user wants to analyze
+    print("If you would like to analyze a local book, type \"local\". If you would like to analyze an online book, type \"online\".\n")
+    book_type = input("")
+    print("")
+    return book_type
+
+def get_book_path(): # gets the local patch to the book
+    book_path = input("Input the path to your locally saved book: ")
+    return book_path
+
+def get_book_url(): # gets the url to the book from the user
+    pass
+                
+def generate_report(path_to_book_file): # prints the report
     print("============ BOOKBOT ============")
     print(f"Analyzing book found at {path_to_book_file}")
 
@@ -35,6 +63,7 @@ def main():
     print("============= END ===============")
 
     return
+
 
 main()
 
