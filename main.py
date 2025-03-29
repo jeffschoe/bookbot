@@ -4,6 +4,7 @@ from stats import sort_chars_and_counts
 import sys
 import requests
 import os
+from os import system
 
 """
 Still want to work on: 
@@ -24,19 +25,18 @@ def main():
     dir_setup()
 
     first_loop = True
-
     while ask_run_analyzer(first_loop) == 'yes': # main book loop
 
         book_type = get_book_type()    
 
         if book_type == "local":
             generate_report(get_book_local_path())
-
+            display_report() # display the contents of the report to the terminal
         elif book_type == "online":
             generate_report(url_to_txt_file(get_book_url(), get_new_txt_file_name()))
+            display_report() # display the contents of the report to the terminal
         else: 
             pass # block reserved in case other methods of getting books are ever added
-        
         first_loop = False 
 
     end()
@@ -55,11 +55,11 @@ def dir_setup():
         print("Found existing /reports directory.")
     else:
         print("/reports directory not found, creating one...")
-        os.mkdir('books')
+        os.mkdir('reports')
         print("/reports directory succesfully created!")
     
 
-def welcome(): # introduce the program
+def welcome():
     print("Welcome to BookBot, by @jeffschoe")
     print("BookBot will analyze a book for you, either saved locally or pulled from the web!\n")
     return
@@ -128,6 +128,8 @@ def generate_report(path_to_book_file): # prints the report
     print("\n============= END ===============\n")
     return
 
+def display_report(path) # will need to receive a path to the .txt file
+    system(f"cat {path}")# so it can cat it out to the terminal
 
 def end():
     print("Thank you for using BookBot!\n")
