@@ -3,6 +3,7 @@ from stats import get_num_chars
 from stats import sort_chars_and_counts
 import sys
 import requests
+import os
 
 """
 Still want to work on: 
@@ -17,8 +18,10 @@ def get_book_text(path_to_file):
     return file_contents
 
 def main():  
-
+    
     welcome()
+
+    dir_setup()
 
     first_loop = True
 
@@ -28,6 +31,7 @@ def main():
 
         if book_type == "local":
             generate_report(get_book_local_path())
+
         elif book_type == "online":
             generate_report(url_to_txt_file(get_book_url(), get_new_txt_file_name()))
         else: 
@@ -37,6 +41,24 @@ def main():
 
     end()
 
+def dir_setup():
+    print("Checking if /books and /reports directories exist...")
+
+    if os.path.isdir('books'):
+        print("Found existing /books directory.")
+    else:
+        print("/books directory not found, creating one...")
+        os.mkdir('books')
+        print("/books directory succesfully created!")
+
+    if os.path.isdir('reports'):
+        print("Found existing /reports directory.")
+    else:
+        print("/reports directory not found, creating one...")
+        os.mkdir('books')
+        print("/reports directory succesfully created!")
+    
+
 def welcome(): # introduce the program
     print("Welcome to BookBot, by @jeffschoe")
     print("BookBot will analyze a book for you, either saved locally or pulled from the web!\n")
@@ -45,7 +67,7 @@ def welcome(): # introduce the program
 def ask_run_analyzer(first_loop):
 
     if first_loop == True:
-        print("Let's anaylze your first book!\n")
+        print("\nLet's anaylze your first book!\n")
         print(f"Would you like to continue? Type \"yes\" or \"no\".\n")
         answer_run_analyzer = input("Response: ")
         print("")
@@ -105,7 +127,6 @@ def generate_report(path_to_book_file): # prints the report
 
     print("\n============= END ===============\n")
     return
-
 
 
 def end():
