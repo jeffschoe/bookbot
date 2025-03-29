@@ -31,10 +31,10 @@ def main():
 
         if book_type == "local":
             generate_report(get_book_local_path())
-            display_report() # display the contents of the report to the terminal
+            #display_report() # display the contents of the report to the terminal
         elif book_type == "online":
             generate_report(url_to_txt_file(get_book_url(), get_new_txt_file_name()))
-            display_report() # display the contents of the report to the terminal
+            #display_report() # display the contents of the report to the terminal
         else: 
             pass # block reserved in case other methods of getting books are ever added
         first_loop = False 
@@ -128,7 +128,7 @@ def generate_report(path_to_book_file): # prints the report
     print("\n============= END ===============\n")
     return
 
-def display_report(path) # will need to receive a path to the .txt file
+def display_report(path): # path to the .txt file
     system(f"cat {path}")# so it can cat it out to the terminal
 
 def end():
