@@ -8,7 +8,7 @@ from os import system
 
 """
 Still want to work on: 
-    add way to automatically save reports to a file called reports.
+    make option to output the report to terminal if wanted
     add error handling
     add different analysis features
 """
@@ -31,10 +31,10 @@ def main():
 
         if book_type == "local":
             generate_report(get_book_local_path())
-            #display_report() # display the contents of the report to the terminal
+            #display_report(get_book_local_path()) # display the contents of the report to the terminal
         elif book_type == "online":
             generate_report(url_to_txt_file(get_book_url(), get_new_txt_file_name()))
-            #display_report() # display the contents of the report to the terminal
+            #display_report(url_to_txt_file(get_book_url(), get_new_txt_file_name())) # display the contents of the report to the terminal
         else: 
             pass # block reserved in case other methods of getting books are ever added
         first_loop = False 
@@ -68,7 +68,7 @@ def ask_run_analyzer(first_loop):
 
     if first_loop == True:
         print("\nLet's anaylze your first book!\n")
-        print(f"Would you like to continue? Type \"yes\" or \"no\".\n")
+        print(f"Ready to get started? Type \"yes\" or \"no\".\n")
         answer_run_analyzer = input("Response: ")
         print("")
         return answer_run_analyzer
@@ -105,9 +105,38 @@ def get_new_txt_file_name(): # asks user to specify the new file name for their 
     print("")
     return new_txt_name
 
-def generate_report(path_to_book_file): # prints the report
+def generate_report(path_to_book_file): # creates the report
+    book_file_name = f"{path_to_book_file.split('/')[-1]}" # pull file name out of path
+    book_name = f"{book_file_name.split('.')[0]}" # pull book name out of file name
+    try:
+        with open(f"reports/{book_name}_report.txt", "x") as f:
+            f.write("\n========= BOOKBOT REPORT =========")
+            f.write(f"\nAnalyzing book found at {path_to_book_file}")
 
-    print("\n============ BOOKBOT ============")
+            f.write("\n\n----------- Word Count ----------")
+            f.write(f"\nFound {get_num_words(get_book_text(path_to_book_file))} total words")
+            
+            f.write("\n\n--------- Character Count -------")
+            count_of_chars = get_num_chars(get_book_text(path_to_book_file))
+            sorted_chars_and_counts = sort_chars_and_counts(count_of_chars) #list of dictionaries
+
+            i = 0
+            while i < len(sorted_chars_and_counts):
+                if sorted_chars_and_counts[i]["character"].isalpha():
+                    f.write(f"\n{sorted_chars_and_counts[i]["character"]}: {sorted_chars_and_counts[i]["count"]}")
+                    i +=1
+                else:
+                    i += 1
+
+            f.write("\n\n============= END ===============\n")
+    except FileExistsError:
+        print(f"\nFilename \"{book_name}_report.txt\" already exists, new file not created.")
+
+    return
+
+def display_report(path_to_book_file): # prints the report ***this will eventually just cat the report out to terminal
+
+    print("\n========= BOOKBOT REPORT =========")
     print(f"Analyzing book found at {path_to_book_file}")
 
     print("\n----------- Word Count ----------")
@@ -128,8 +157,10 @@ def generate_report(path_to_book_file): # prints the report
     print("\n============= END ===============\n")
     return
 
+'''
 def display_report(path): # path to the .txt file
     system(f"cat {path}")# so it can cat it out to the terminal
+'''
 
 def end():
     print("Thank you for using BookBot!\n")
