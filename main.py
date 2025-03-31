@@ -36,21 +36,21 @@ def main():
     end()
 
 def dir_setup():
-    print("Checking if ./books and ./reports directories exist...")
+    print("Checking if books/ and reports/ directories exist...")
 
     if os.path.isdir('books'):
-        print("Found existing ./books directory.")
+        print("Found existing books/ directory.")
     else:
-        print("./books directory not found, creating one...")
+        print("books/ directory not found, creating one...")
         os.mkdir('books')
-        print("./books directory succesfully created!")
+        print("books/ directory succesfully created!")
 
     if os.path.isdir('reports'):
-        print("Found existing ./reports directory.")
+        print("Found existing reports/ directory.")
     else:
-        print("./reports directory not found, creating one...")
+        print("reports/ directory not found, creating one...")
         os.mkdir('reports')
-        print("./reports directory succesfully created!")
+        print("reports/ directory succesfully created!")
 
 def welcome():
     print("Welcome to BookBot, by @jeffschoe")
@@ -80,7 +80,6 @@ def get_book_type(): # get the type of book user wants to analyze
 
 def get_book_local_path(): # gets the local patch to the book
     book_local_path = input("Input the path to your locally saved book, such as \"books/example_book.txt\": ")
-    #print("") #maybe bring back*********************
     return book_local_path
 
 def url_to_txt_file(book_url, new_book_txt_name): 
